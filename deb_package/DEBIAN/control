@@ -1,0 +1,9 @@
+Package: latin-checker
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: golang-go (>=1.20)
+Maintainer: Viktor <vhimlihmail@gmail.com>
+Description: Проверка латинских квадратов
+ Простая программа на Go, проверяющая, является ли заданная матрица латинским квадратом.

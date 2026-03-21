@@ -1,0 +1,8 @@
+stages:
+  - build
+
+
+build-app:
+  stage: build
+  script: 
+    - bash ./cicd/build.sh
