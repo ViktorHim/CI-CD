@@ -21,7 +21,7 @@ jobs:
         run: bash ./cicd/build.sh
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: binary
           path: usr/bin/
@@ -40,7 +40,7 @@ jobs:
           sudo apt install -y make gcc golang-go
 
       - name: Download build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: binary
           path: usr/bin/
@@ -61,7 +61,7 @@ jobs:
           sudo apt install -y dpkg-dev
 
       - name: Download build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: binary
           path: usr/bin/
@@ -70,7 +70,7 @@ jobs:
         run: bash ./cicd/package.sh
 
       - name: Upload deb artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: deb-package
           path: "*.deb"
