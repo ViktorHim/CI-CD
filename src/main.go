@@ -26,7 +26,7 @@ func scanMatrix(size int) ([][]int, error) {
 			matrix[i][j], _ = strconv.Atoi(p)
 		}
 	}
-	return matrix, reader.Err()
+	return matrix, nil
 }
 
 func isLatinSquare(matrix [][]int) bool {
