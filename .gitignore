@@ -1,1 +1,8 @@
-/build
+usr/bin/
+usr/
+deb_package/
+
+.vscode/
+.idea/
+
+*.deb

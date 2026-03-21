@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
 echo "Building App"
-make
+chmod +x usr/bin/latin_checker
+make deb
 echo "Done!"
