@@ -8,32 +8,25 @@ import (
 	"strings"
 )
 
-func readMatrix(filename string) ([][]int, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
+func scanMatrix(size int) ([][]int, error) {
+	reader := bufio.NewReader(os.Stdin)
+	reader.ReadString('\n')
 
-	scanner := bufio.NewScanner(file)
-	var matrix [][]int
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if line == "" {
-			continue
+	matrix := make([][]int, size)
+
+	fmt.Println("Введите матрицу (каждая строка через пробел):")
+	for i := 0; i < size; i++ {
+		fmt.Printf("Строка %d: ", i+1)
+		line, _ := reader.ReadString('\n')
+		line = strings.TrimSpace(line)
+		parts := strings.Fields(line)
+
+		matrix[i] = make([]int, size)
+		for j, p := range parts {
+			matrix[i][j], _ = strconv.Atoi(p)
 		}
-		strNums := strings.Fields(line)
-		row := make([]int, len(strNums))
-		for i, s := range strNums {
-			num, err := strconv.Atoi(s)
-			if err != nil {
-				return nil, err
-			}
-			row[i] = num
-		}
-		matrix = append(matrix, row)
 	}
-	return matrix, scanner.Err()
+	return matrix, reader.Err()
 }
 
 func isLatinSquare(matrix [][]int) bool {
@@ -42,7 +35,6 @@ func isLatinSquare(matrix [][]int) bool {
 		return false
 	}
 
-	// Проверка, что все строки и столбцы имеют длину n
 	for _, row := range matrix {
 		if len(row) != n {
 			return false
@@ -54,7 +46,6 @@ func isLatinSquare(matrix [][]int) bool {
 		expected[i] = true
 	}
 
-	// Проверка строк
 	for _, row := range matrix {
 		seen := make(map[int]bool)
 		for _, val := range row {
@@ -65,7 +56,6 @@ func isLatinSquare(matrix [][]int) bool {
 		}
 	}
 
-	// Проверка столбцов
 	for col := 0; col < n; col++ {
 		seen := make(map[int]bool)
 		for row := 0; row < n; row++ {
@@ -90,23 +80,13 @@ func printMatrix(matrix [][]int) {
 }
 
 func main() {
-	files := []string{"matrix_examples/matrix1.txt", "matrix_examples/matrix2.txt", "matrix_examples/matrix3.txt", "matrix_examples/matrix4.txt", "matrix_examples/matrix5.txt"}
+	fmt.Println("Введите размерность матрицы:")
+	var n int
+	fmt.Scan(&n)
 
-	fmt.Println("Выберите файл для проверки матрицы:")
-	for i, f := range files {
-		fmt.Printf("%d. %s\n", i+1, f)
-	}
-
-	var choice int
-	fmt.Scan(&choice)
-	if choice < 1 || choice > 5 {
-		fmt.Println("Некорректный выбор")
-		return
-	}
-
-	matrix, err := readMatrix(files[choice-1])
+	matrix, err := scanMatrix(n)
 	if err != nil {
-		fmt.Println("Ошибка при чтении файла:", err)
+		fmt.Println("Ошибка ввода:", err)
 		return
 	}
 

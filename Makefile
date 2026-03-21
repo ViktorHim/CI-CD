@@ -1,12 +1,12 @@
 EXEC=build/latin_checker
 SRC=src/main.go
-
 GO := $(shell which go)
+
 ifeq ($(GO),)
 $(error "Go не установлен! Установите golang для сборки.")
 endif
 
-DEB_NAME=latin_checker
+DEB_NAME=latin-checker
 DEB_VERSION=1.0
 DEB_DIR=deb_package
 
@@ -25,16 +25,7 @@ deb: $(EXEC) | deb_structure
 	@echo "Создание deb-пакета..."
 	mkdir -p $(DEB_DIR)/usr/local/bin
 	cp $(EXEC) $(DEB_DIR)/usr/local/bin/
-	# Создаём control файл
-	@echo "Package: $(DEB_NAME)
-Version: $(DEB_VERSION)
-Section: utils
-Priority: optional
-Architecture: amd64
-Depends: golang-go (>=1.20)
-Maintainer: Your Name <your.email@example.com>
-Description: Проверка латинских квадратов
- Простая программа на Go, проверяющая, является ли заданная матрица латинским квадратом." > $(DEB_DIR)/DEBIAN/control
+	@printf "Package: $(DEB_NAME)\nVersion: $(DEB_VERSION)\nSection: utils\nPriority: optional\nArchitecture: amd64\nDepends: golang-go (>=1.20)\nMaintainer: Viktor <vhimlihmail@gmail.com>\nDescription: Проверка латинских квадратов\n Простая программа на Go, проверяющая, является ли заданная матрица латинским квадратом.\n" > $(DEB_DIR)/DEBIAN/control
 	dpkg-deb --build $(DEB_DIR)
 	@echo "deb-пакет создан: $(DEB_DIR).deb"
 
