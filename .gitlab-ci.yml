@@ -1,8 +1,10 @@
 stages:
   - build
 
-
 build-app:
   stage: build
   script: 
     - bash ./cicd/build.sh
+  artifacts:
+    paths:
+      - usr/bin
