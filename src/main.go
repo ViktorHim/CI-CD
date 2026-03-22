@@ -7,6 +7,29 @@ import (
 	"strconv"
 	"strings"
 )
+func parseMatrixFromArgs(sizeStr string, matrixStr string) ([][]int, error) {
+    size, err := strconv.Atoi(sizeStr)
+    if err != nil {
+        return nil, fmt.Errorf("неверная размерность: %s", sizeStr)
+    }
+
+    parts := strings.Fields(matrixStr)
+    if len(parts) != size*size {
+        return nil, fmt.Errorf("ожидалось %d чисел, получено %d", size*size, len(parts))
+    }
+
+    matrix := make([][]int, size)
+    for i := 0; i < size; i++ {
+        matrix[i] = make([]int, size)
+        for j := 0; j < size; j++ {
+            matrix[i][j], err = strconv.Atoi(parts[i*size+j])
+            if err != nil {
+                return nil, fmt.Errorf("неверное число: %s", parts[i*size+j])
+            }
+        }
+    }
+    return matrix, nil
+}
 
 func scanMatrix(size int) ([][]int, error) {
 	reader := bufio.NewReader(os.Stdin)
@@ -80,22 +103,36 @@ func printMatrix(matrix [][]int) {
 }
 
 func main() {
-	fmt.Println("Введите размерность матрицы:")
-	var n int
-	fmt.Scan(&n)
-
-	matrix, err := scanMatrix(n)
-	if err != nil {
-		fmt.Println("Ошибка ввода:", err)
-		return
-	}
-
-	fmt.Println("Матрица:")
-	printMatrix(matrix)
-
-	if isLatinSquare(matrix) {
-		fmt.Println("Это латинский квадрат")
-	} else {
-		fmt.Println("Это НЕ латинский квадрат")
-	}
+    if len(os.Args) == 3 {
+        matrix, err := parseMatrixFromArgs(os.Args[1], os.Args[2])
+        if err != nil {
+            fmt.Println("Ошибка:", err)
+            os.Exit(1)
+        }
+        fmt.Println("Матрица:")
+        printMatrix(matrix)
+        if isLatinSquare(matrix) {
+            fmt.Println("Это латинский квадрат")
+            os.Exit(0)
+        } else {
+            fmt.Println("Это НЕ латинский квадрат")
+            os.Exit(1)
+        }
+    } else {
+        fmt.Println("Введите размерность матрицы:")
+        var n int
+        fmt.Scan(&n)
+        matrix, err := scanMatrix(n)
+        if err != nil {
+            fmt.Println("Ошибка ввода:", err)
+            return
+        }
+        fmt.Println("Матрица:")
+        printMatrix(matrix)
+        if isLatinSquare(matrix) {
+            fmt.Println("Это латинский квадрат")
+        } else {
+            fmt.Println("Это НЕ латинский квадрат")
+        }
+    }
 }
