@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: latin-checker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: latin-checker
+  template:
+    metadata:
+      labels:
+        app: latin-checker
+    spec:
+      containers:
+        - name: latin-checker
+          image: viktor/latin-checker:latest
