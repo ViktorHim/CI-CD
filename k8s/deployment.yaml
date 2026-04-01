@@ -15,6 +15,6 @@ spec:
       containers:
         - name: latin-checker
           image: viktor/latin-checker:latest
-          imagePullPolicy: Always
+          imagePullPolicy: Never
           command: ["/bin/sh", "-c"]
           args: ["/usr/local/bin/latin_checker 3 '1 2 3 2 3 1 3 1 2' && sleep infinity"]
